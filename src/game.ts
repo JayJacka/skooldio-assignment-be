@@ -16,13 +16,16 @@ async function askQuestion(query: string): Promise<string> {
 }
 
 async function getBet(chips: number): Promise<number> {
-	const bet = Number.parseInt(
-		await askQuestion(`You have ${chips} chips. Place your bet: `),
-		10,
-	);
-	if (Number.isNaN(bet) || bet <= 0 || bet > chips) {
+	let bet: number;
+	while (true) {
+		const betInput = await askQuestion(
+			`You have ${chips} chips. Place your bet: `,
+		);
+		bet = Number.parseInt(betInput, 10);
+		if (!Number.isNaN(bet) && bet > 0 && bet <= chips) {
+			break;
+		}
 		console.log("Invalid bet amount. Try again.");
-		return getBet(chips);
 	}
 	return bet;
 }
@@ -30,10 +33,9 @@ async function getBet(chips: number): Promise<number> {
 async function playRound(chips: number): Promise<number> {
 	const bet = await getBet(chips);
 
-	let deck = shuffleDeck(createDeck());
-	const [playerHand, updatedDeck1] = drawCards(deck, 2);
-	const [dealerHand, updatedDeck2] = drawCards(updatedDeck1, 2);
-	deck = updatedDeck2;
+	const deck = shuffleDeck(createDeck());
+	const [playerHand, updatedDeck] = drawCards(deck, 2);
+	const [dealerHand, _] = drawCards(updatedDeck, 2);
 
 	const playerScore = calculateScore(playerHand);
 	const dealerScore = calculateScore(dealerHand);
@@ -61,7 +63,7 @@ async function playRound(chips: number): Promise<number> {
 }
 
 export async function startGame(): Promise<void> {
-	console.log("Welcome to the Card Game!");
+	console.log("Welcome to the Pok Deng!");
 	console.log(
 		"Rules: Ace = 1 point, 2-9 = face value, King/Queen/Jack/10 = 0 points.",
 	);
