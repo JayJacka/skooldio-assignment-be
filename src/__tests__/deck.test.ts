@@ -2,47 +2,48 @@ import { describe, it, expect } from "vitest";
 import { createDeck, shuffleDeck, drawCards, calculateScore } from "../deck";
 
 describe("Deck utilities", () => {
-  it("should create a deck of 52 cards", () => {
-    // arrange
-    
-    // act
-    const deck = createDeck();
+	it("should create a deck of 52 cards", () => {
+		// arrange
 
-    // assert
-    expect(deck).toHaveLength(52);
-  });
+		// act
+		const deck = createDeck();
 
-  it("should shuffle the deck", () => {
-    // arrange
-    const deck = createDeck();
+		// assert
+		expect(deck).toHaveLength(52);
+	});
 
-    // act
-    const shuffledDeck = shuffleDeck(deck);
+	it("should shuffle the deck", () => {
+		// arrange
+		const deck = createDeck();
+		const shuffledDeck = deck.slice();
 
-    // assert
-    expect(shuffledDeck).not.toEqual(deck);
-  });
+		// act
+		shuffleDeck(shuffledDeck);
 
-  it("should draw cards and return remaining deck", () => {
-    // arrange
-    const deck = createDeck();
+		// assert
+		expect(shuffledDeck).not.toEqual(deck);
+	});
 
-    // act
-    const [drawnCards, remainingDeck] = drawCards(deck, 2);
+	it("should draw cards and return remaining deck", () => {
+		// arrange
+		const deck = createDeck();
 
-    // assert
-    expect(drawnCards).toHaveLength(2);
-    expect(remainingDeck).toHaveLength(50);
-  });
+		// act
+		const [drawnCards, remainingDeck] = drawCards(deck, 2);
 
-  it("should calculate correct score for a hand", () => {
-    // arrange
-    const hand = ["Ace Hearts", "10 Spades", "5 Diamonds"];
+		// assert
+		expect(drawnCards).toHaveLength(2);
+		expect(remainingDeck).toHaveLength(50);
+	});
 
-    // act
-    const score = calculateScore(hand);
+	it("should calculate correct score for a hand", () => {
+		// arrange
+		const hand = ["Ace Hearts", "10 Spades", "5 Diamonds"];
 
-    // assert
-    expect(score).toBe(6);
-  });
+		// act
+		const score = calculateScore(hand);
+
+		// assert
+		expect(score).toBe(6);
+	});
 });

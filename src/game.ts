@@ -33,7 +33,8 @@ async function getBet(chips: number): Promise<number> {
 async function playRound(chips: number): Promise<number> {
 	const bet = await getBet(chips);
 
-	const deck = shuffleDeck(createDeck());
+	const deck = createDeck();
+	shuffleDeck(deck);
 	const [playerHand, updatedDeck] = drawCards(deck, 2);
 	const [dealerHand, _] = drawCards(updatedDeck, 2);
 

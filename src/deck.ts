@@ -15,28 +15,35 @@ export function createDeck(): string[] {
 		"Queen",
 		"King",
 	];
-	return suits.flatMap((suit) => ranks.map((rank) => `${rank} ${suit}`));
+
+	const deck: string[] = [];
+	for (const suit of suits) {
+		for (const rank of ranks) {
+			deck.push(`${rank} ${suit}`);
+		}
+	}
+	return deck;
 }
 
-export function shuffleDeck(deck: string[]): string[] {
-	const shuffledDeck = [...deck];
-	for (let i = shuffledDeck.length - 1; i > 0; i--) {
+export function shuffleDeck(deck: string[]): void {
+	for (let i = deck.length - 1; i > 0; i--) {
 		const j = Math.floor(Math.random() * (i + 1));
-		[shuffledDeck[i], shuffledDeck[j]] = [shuffledDeck[j], shuffledDeck[i]];
+		[deck[i], deck[j]] = [deck[j], deck[i]];
 	}
-	return shuffledDeck;
 }
 
 export function drawCards(deck: string[], count: number): [string[], string[]] {
-	const drawnCards = deck.slice(-count);
-	const remainingDeck = deck.slice(0, -count);
-	return [drawnCards, remainingDeck];
+	const drawnCards = deck.splice(deck.length - count, count);
+	return [drawnCards, deck];
 }
 
 export function calculateScore(hand: string[]): number {
+	const faceCards = new Set(["King", "Queen", "Jack", "10"]);
+
 	return hand.reduce((score, card) => {
 		const rank = card.split(" ")[0];
-		if (["King", "Queen", "Jack", "10"].includes(rank)) return score + 0;
+
+		if (faceCards.has(rank)) return score + 0;
 		if (rank === "Ace") return score + 1;
 		return score + Number.parseInt(rank, 10);
 	}, 0);
