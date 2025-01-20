@@ -38,7 +38,9 @@ async function playRound(chips: number): Promise<number> {
 	const playerScore = calculateScore(playerHand);
 	const dealerScore = calculateScore(dealerHand);
 
-	console.log(`Your hand: ${playerHand.map((card) => `${card.split(" ")[1]}-${card.split(" ")[0]}`).join(", ")} (Score: ${playerScore})`);
+	console.log(
+		`Your hand: ${playerHand.map((card) => `${card.split(" ")[1]}-${card.split(" ")[0]}`).join(", ")} (Score: ${playerScore})`,
+	);
 	console.log(
 		`Dealer's hand: ${dealerHand.map((card) => `${card.split(" ")[1]}-${card.split(" ")[0]}`).join(", ")} (Score: ${dealerScore})`,
 	);
